@@ -1,0 +1,13 @@
+name: GitHub Actions on Kata
+run-name: Testing out actions on Kata
+on: [push, workflow_dispatch]
+jobs:
+  job-small:
+    runs-on: kata-runners-medium
+    steps:
+      - name: CPU info
+        run: |
+          cat /proc/cpuinfo
+      - name: Memory info
+        run: |
+          cat /proc/meminfo
