@@ -3,7 +3,7 @@ run-name: Testing out actions on Kata
 on: [push, workflow_dispatch]
 jobs:
   job-small:
-    runs-on: kata-runners-small
+    runs-on: kata-runners-medium
     steps:
       - name: CPU info
         run: |
