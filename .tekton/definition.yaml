@@ -59,9 +59,8 @@ spec:
       metadata:
         name: pipelinerun-$(uid)
       spec:
-        #taskRunTemplate:
-          podTemplate:
-            runtimeClassName: kata-remote
+        podTemplate:
+          runtimeClassName: kata-remote
         pipelineRef:
             name: pipeline
 ---
