@@ -14,7 +14,6 @@ spec:
         echo "Build x86!"
         head /proc/cpuinfo
         head /proc/meminfo
-        sleep 30
 ---
 apiVersion: tekton.dev/v1
 kind: Task
@@ -32,7 +31,6 @@ spec:
         echo "Build s390x!"
         head /proc/cpuinfo
         head /proc/meminfo
-        sleep 30
 ---
 apiVersion: tekton.dev/v1
 kind: Pipeline
