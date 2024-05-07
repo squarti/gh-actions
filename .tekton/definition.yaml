@@ -57,7 +57,7 @@ spec:
     - apiVersion: tekton.dev/v1
       kind: PipelineRun
       metadata:
-        name: pipelinerun-$(uid)
+        name: run-$(uid)
       spec:
         podTemplate:
           runtimeClassName: kata-remote
