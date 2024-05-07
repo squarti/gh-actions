@@ -1,0 +1,94 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-x86
+  annotations:
+    "io.katacontainers.config.hypervisor.machine_type": bx2-2x8
+spec:
+  params:
+  steps:
+    - name: build
+      image: ubuntu
+      script: |
+        #!/bin/bash
+        echo "Build x86!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        sleep 30
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-s390x
+  annotations:
+    "io.katacontainers.config.hypervisor.machine_type": bz2-2x8
+spec:
+  params:
+  steps:
+    - name: build
+      image: ubuntu
+      script: |
+        #!/bin/bash
+        echo "Build s390x!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        sleep 30
+---
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: pipeline
+spec:
+  params:
+  tasks:
+    - name: build-x86
+      taskRef:
+        name: build-x86
+    - name: build-s390x
+      taskRef:
+        name: build-s390x
+---
+apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: template
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1
+      kind: PipelineRun
+      metadata:
+        name: pipelinerun-$(uid)
+      spec:
+        taskRunTemplate:
+          podTemplate:
+            runtimeClassName: kata-remote
+        pipelineRef:
+            name: pipeline
+---
+apiVersion: tekton.dev/v1
+kind: TriggerBinding
+metadata:
+  name: binding
+spec:
+  params:
+---
+apiVersion: tekton.dev/v1
+kind: EventListener
+metadata:
+  name: deploy-listener
+spec:
+  triggers:
+    - binding:
+        name: binding
+      template:
+        name: template
+#apiVersion: tekton.dev/v1
+#kind: PipelineRun
+#metadata:
+#  name: run
+#spec:
+#  taskRunTemplate:
+#    podTemplate:
+#      runtimeClassName: kata-remote
+#  pipelineRef:
+#    name: pipeline
