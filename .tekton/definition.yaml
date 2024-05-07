@@ -8,7 +8,7 @@ spec:
   params:
   steps:
     - name: build
-      image: ubuntu
+      image: icr.io/continuous-delivery/base-images/base:v1.5.0
       script: |
         #!/bin/bash
         echo "Build x86!"
@@ -25,7 +25,7 @@ spec:
   params:
   steps:
     - name: build
-      image: ubuntu
+      image: icr.io/continuous-delivery/base-images/base:v1.5.0
       script: |
         #!/bin/bash
         echo "Build s390x!"
