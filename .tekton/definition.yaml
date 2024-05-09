@@ -3,7 +3,7 @@ kind: Task
 metadata:
   name: build-x86
   annotations:
-    "io.katacontainers.config.hypervisor.machine_type": bx2-2x8
+    "io.katacontainers.config.hypervisor.machine_type": bx2-8x32
 spec:
   params:
   steps:
