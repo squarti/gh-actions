@@ -37,7 +37,7 @@ spec:
         name: run-$(uid)
       spec:
         podTemplate:
-          runtimeClassName: kata-remote-x86-large
+          runtimeClassName: x86-large
         pipelineRef:
             name: pipeline-x86-large
 ---
