@@ -42,9 +42,9 @@ spec:
     - name: build-x86-large
       taskRef:
         name: build-x86-large
-    - name: build-tiny
+    - name: build-small
       taskRef:
-        name: build-tiny
+        name: build-small
 ---
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
