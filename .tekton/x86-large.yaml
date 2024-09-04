@@ -17,9 +17,9 @@ spec:
 apiVersion: tekton.dev/v1
 kind: Task
 metadata:
-  name: build-tiny
+  name: build-small
   labels:
-    runtimeClassName: tiny
+    runtimeClassName: small
 spec:
   params:
   steps:
@@ -27,7 +27,7 @@ spec:
       image: icr.io/continuous-delivery/base-images/base:v1.6.0
       script: |
         #!/bin/bash
-        echo "Build tiny!"
+        echo "Build small!"
         head /proc/cpuinfo
         head /proc/meminfo
         lsblk
