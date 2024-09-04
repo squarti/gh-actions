@@ -15,6 +15,24 @@ spec:
         lsblk
 ---
 apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-tiny
+  labels:
+    runtimeClassName: tiny
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build tiny!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+---
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: pipeline-x86-large
@@ -24,6 +42,9 @@ spec:
     - name: build-x86-large
       taskRef:
         name: build-x86-large
+    - name: build-tiny
+      taskRef:
+        name: build-tiny
 ---
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
