@@ -59,6 +59,8 @@ spec:
       spec:
         podTemplate:
           runtimeClassName: x86-large
+        securityContext:
+          privileged: true
         pipelineRef:
             name: pipeline-x86-large
 ---
