@@ -13,7 +13,7 @@ spec:
         head /proc/cpuinfo
         head /proc/meminfo
         lsblk
-        sleep 3600
+        #sleep 3600
 ---
 apiVersion: tekton.dev/v1
 kind: Task
