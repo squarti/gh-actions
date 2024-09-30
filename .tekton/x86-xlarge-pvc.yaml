@@ -21,27 +21,6 @@ spec:
         #sleep 3600
 ---
 apiVersion: tekton.dev/v1
-kind: Task
-metadata:
-  name: build-small
-  labels:
-    runtimeClassName: small
-spec:
-  params:
-  workspaces:
-  - name: task-pvc
-    mountPath: /workspace
-  steps:
-    - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
-      script: |
-        #!/bin/bash
-        echo "Build small!"
-        head /proc/cpuinfo
-        head /proc/meminfo
-        lsblk
----
-apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: pipeline-x86-xlarge
@@ -53,12 +32,6 @@ spec:
     - name: build-x86-xlarge
       taskRef:
         name: build-x86-xlarge
-      workspaces:
-      - name: task-pvc
-        workspace: pipeline-pvc
-    - name: build-small
-      taskRef:
-        name: build-small
       workspaces:
       - name: task-pvc
         workspace: pipeline-pvc
