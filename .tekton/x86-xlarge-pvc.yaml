@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1
 kind: Task
 metadata:
-  name: build-x86-large
+  name: build-x86-xlarge
   labels:
      runtimeClassName: x86-xlarge
 spec:
@@ -11,7 +11,7 @@ spec:
       image: icr.io/continuous-delivery/base-images/base:v1.6.0
       script: |
         #!/bin/bash
-        echo "Build x86-large!"
+        echo "Build x86-xlarge!"
         head /proc/cpuinfo
         head /proc/meminfo
         lsblk
@@ -38,15 +38,15 @@ spec:
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: pipeline-x86-large
+  name: pipeline-x86-xlarge
 spec:
   params:
   workspaces:
   - name: pipeline-pvc
   tasks:
-    - name: build-x86-large
+    - name: build-x86-xlarge
       taskRef:
-        name: build-x86-large
+        name: build-x86-xlarge
       workspaces:
       - name: task-pvc
         workspace: pipeline-pvc
@@ -73,7 +73,7 @@ spec:
         securityContext:
           privileged: true
         pipelineRef:
-            name: pipeline-x86-large
+            name: pipeline-x86-xlarge
         workspaces:
           - name: pipeline-pvc
             persistentVolumeClaim:
