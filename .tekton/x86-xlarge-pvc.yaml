@@ -67,7 +67,7 @@ spec:
         name: run-$(uid)
       spec:
         podTemplate:
-          runtimeClassName: x86-xlarge
+          runtimeClassName: x86-large
         securityContext:
           privileged: true
         pipelineRef:
