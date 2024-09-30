@@ -1,0 +1,96 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-x86-xlarge
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build x86-large!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        #sleep 3600
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-small
+  labels:
+    runtimeClassName: small
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build small!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+---
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: pipeline-x86-large
+spec:
+  params:
+  workspaces:
+  - name: pipeline-pvc
+  tasks:
+    - name: build-x86-large
+      taskRef:
+        name: build-x86-large
+      workspaces:
+      - name: task-pvc
+        workspace: pipeline-pvc
+    - name: build-small
+      taskRef:
+        name: build-small
+      workspaces:
+      - name: task-pvc
+        workspace: pipeline-pvc
+---
+apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: listener-x86-xlarge-pvc
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1
+      kind: PipelineRun
+      metadata:
+        name: run-$(uid)
+      spec:
+        podTemplate:
+          runtimeClassName: x86-large
+        securityContext:
+          privileged: true
+        pipelineRef:
+            name: pipeline-x86-large
+        workspaces:
+          - name: pipeline-pvc
+            persistentVolumeClaim:
+              claimName: base-$(uid)-pvc
+---
+apiVersion: tekton.dev/v1
+kind: TriggerBinding
+metadata:
+  name: listener-x86-xlarge-pvc
+spec:
+  params:
+---
+apiVersion: tekton.dev/v1
+kind: EventListener
+metadata:
+  name: listener-x86-xlarge-pvc
+spec:
+  triggers:
+    - binding:
+        name: listener-x86-xlarge-pvc
+      template:
+        name: listener-x86-xlarge-pvc
