@@ -6,6 +6,9 @@ metadata:
      runtimeClassName: x86-large
 spec:
   params:
+  workspaces:
+  - name: task-pvc
+    mountPath: /workspace
   steps:
     - name: build
       image: icr.io/continuous-delivery/base-images/base:v1.6.0
@@ -25,6 +28,9 @@ metadata:
     runtimeClassName: small
 spec:
   params:
+  workspaces:
+  - name: task-pvc
+    mountPath: /workspace
   steps:
     - name: build
       image: icr.io/continuous-delivery/base-images/base:v1.6.0
