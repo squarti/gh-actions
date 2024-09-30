@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1
 kind: Task
 metadata:
-  name: build-x86-xlarge
+  name: build-x86-large
 spec:
   params:
   steps:
@@ -67,7 +67,7 @@ spec:
         name: run-$(uid)
       spec:
         podTemplate:
-          runtimeClassName: x86-large
+          runtimeClassName: x86-xlarge
         securityContext:
           privileged: true
         pipelineRef:
