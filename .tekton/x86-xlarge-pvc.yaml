@@ -3,7 +3,7 @@ kind: Task
 metadata:
   name: build-x86-xlarge
   labels:
-     runtimeClassName: x86-xlarge
+     runtimeClassName: x86-large
 spec:
   params:
   steps:
