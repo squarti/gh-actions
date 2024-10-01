@@ -3,7 +3,7 @@ kind: Task
 metadata:
   name: build-x86-xlarge
   labels:
-     runtimeClassName: small
+     runtimeClassName: x86-xlarge
 spec:
   params:
   workspaces:
