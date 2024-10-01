@@ -42,6 +42,17 @@ metadata:
   name: listener-x86-xlarge-pvc
 spec:
   resourcetemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: base-$(uid)-pvc
+      spec:
+        resources:
+          requests:
+            storage:  5Gi
+        volumeMode: Filesystem
+        accessModes:
+          - ReadWriteOnce
     - apiVersion: tekton.dev/v1
       kind: PipelineRun
       metadata:
