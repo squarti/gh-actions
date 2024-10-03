@@ -1,0 +1,109 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-x86-xlarge
+  labels:
+    runtimeClassName: x86-xlarge
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build x86-xlarge!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-s390x-xlarge
+  labels:
+    runtimeClassName: s390x-xlarge
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build s390x-xlarge!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-small
+  labels:
+    runtimeClassName: small
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build small!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: pipeline-multiarch
+spec:
+  params:
+  tasks:
+    - name: build-x86-xlarge
+      taskRef:
+        name: build-x86-xlarge
+    - name: build-s390x-xlarge
+      taskRef:
+        name: build-s390x-xlarge
+    - name: build-small
+      taskRef:
+        name: build-small
+---
+apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: listener-multiarch
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1
+      kind: PipelineRun
+      metadata:
+        name: run-$(uid)
+      spec:
+        podTemplate:
+          runtimeClassName: medium
+        securityContext:
+          privileged: true
+        pipelineRef:
+            name: pipeline-multiarch
+---
+apiVersion: tekton.dev/v1
+kind: TriggerBinding
+metadata:
+  name: listener-multiarch
+spec:
+  params:
+---
+apiVersion: tekton.dev/v1
+kind: EventListener
+metadata:
+  name: listener-multiarch
+spec:
+  triggers:
+    - binding:
+        name: listener-multiarch
+      template:
+        name: listener-multiarch
