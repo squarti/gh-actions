@@ -219,7 +219,7 @@ spec:
         name: build-small
     - name: build-medium
       taskRef:
-        name: build-meidum
+        name: build-medium
     - name: build-large
       taskRef:
         name: build-large
