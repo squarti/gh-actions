@@ -1,6 +1,82 @@
 apiVersion: tekton.dev/v1
 kind: Task
 metadata:
+  name: build-small
+  labels:
+    runtimeClassName: small
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build small!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-medium
+  labels:
+    runtimeClassName: medium
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build medium!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-large
+  labels:
+    runtimeClassName: large
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build large!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-x86-large
+  labels:
+    runtimeClassName: x86-large
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build x86-large!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
   name: build-x86-xlarge
   labels:
     runtimeClassName: x86-xlarge
@@ -12,6 +88,82 @@ spec:
       script: |
         #!/bin/bash
         echo "Build x86-xlarge!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-x86-xxlarge
+  labels:
+    runtimeClassName: x86-xxlarge
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build x86-xxlarge!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-s390x-small
+  labels:
+    runtimeClassName: s390x-small
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build s390x-small!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-s390x-medium
+  labels:
+    runtimeClassName: s390x-medium
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build s390x-medium!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-s390x-large
+  labels:
+    runtimeClassName: s390x-large
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build s390x-large!"
         head /proc/cpuinfo
         head /proc/meminfo
         lsblk
@@ -39,9 +191,9 @@ spec:
 apiVersion: tekton.dev/v1
 kind: Task
 metadata:
-  name: build-small
+  name: build-s390x-xxlarge
   labels:
-    runtimeClassName: small
+    runtimeClassName: s390x-xxlarge
 spec:
   params:
   steps:
@@ -49,7 +201,7 @@ spec:
       image: icr.io/continuous-delivery/base-images/base:v1.6.0
       script: |
         #!/bin/bash
-        echo "Build small!"
+        echo "Build s390x-xxlarge!"
         head /proc/cpuinfo
         head /proc/meminfo
         lsblk
@@ -62,15 +214,39 @@ metadata:
 spec:
   params:
   tasks:
-    - name: build-x86-xlarge
-      taskRef:
-        name: build-x86-xlarge
-    - name: build-s390x-xlarge
-      taskRef:
-        name: build-s390x-xlarge
     - name: build-small
       taskRef:
         name: build-small
+    - name: build-medium
+      taskRef:
+        name: build-meidum
+    - name: build-large
+      taskRef:
+        name: build-large
+    - name: build-x86-large
+      taskRef:
+        name: build-x86-large
+    - name: build-x86-xlarge
+      taskRef:
+        name: build-x86-xlarge
+    - name: build-x86-xxlarge
+      taskRef:
+        name: build-s390x-small
+    - name: build-s390x-small
+      taskRef:
+        name: build-s390x-medium
+    - name: build-s390x-medium
+      taskRef:
+        name: build-s390x-large
+    - name: build-s390x-large
+      taskRef:
+        name: build-s390x-large
+    - name: build-s390x-xlarge
+      taskRef:
+        name: build-s390x-xlarge
+    - name: build-s390x-xxlarge
+      taskRef:
+        name: build-s390x-xxlarge
 ---
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
