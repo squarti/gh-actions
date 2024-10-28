@@ -1,0 +1,109 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-small
+  labels:
+    runtimeClassName: small
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build small!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-medium
+  labels:
+    runtimeClassName: medium
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build medium!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-large
+  labels:
+    runtimeClassName: large
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build large!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: pipeline-multiarch
+spec:
+  params:
+  tasks:
+    - name: build-small
+      taskRef:
+        name: build-small
+    - name: build-medium
+      taskRef:
+        name: build-medium
+    - name: build-large
+      taskRef:
+        name: build-large
+---
+apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: listener-multiarch
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1
+      kind: PipelineRun
+      metadata:
+        name: run
+      spec:
+        podTemplate:
+          runtimeClassName: medium
+        securityContext:
+          privileged: true
+        pipelineRef:
+            name: pipeline-multiarch
+---
+apiVersion: tekton.dev/v1
+kind: TriggerBinding
+metadata:
+  name: listener-multiarch
+spec:
+  params:
+---
+apiVersion: tekton.dev/v1
+kind: EventListener
+metadata:
+  name: listener-multiarch
+spec:
+  triggers:
+    - binding:
+        name: listener-multiarch
+      template:
+        name: listener-multiarch
