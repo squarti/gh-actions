@@ -1,64 +1,7 @@
 apiVersion: tekton.dev/v1
-kind: Task
-metadata:
-  name: build-small
-  labels:
-    runtimeClassName: small
-spec:
-  params:
-  steps:
-    - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
-      script: |
-        #!/bin/bash
-        echo "Build small!"
-        head /proc/cpuinfo
-        head /proc/meminfo
-        lsblk
-        df -h .
----
-apiVersion: tekton.dev/v1
-kind: Task
-metadata:
-  name: build-medium
-  labels:
-    runtimeClassName: medium
-spec:
-  params:
-  steps:
-    - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
-      script: |
-        #!/bin/bash
-        echo "Build medium!"
-        head /proc/cpuinfo
-        head /proc/meminfo
-        lsblk
-        df -h .
----
-apiVersion: tekton.dev/v1
-kind: Task
-metadata:
-  name: build-large
-  labels:
-    runtimeClassName: large
-spec:
-  params:
-  steps:
-    - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
-      script: |
-        #!/bin/bash
-        echo "Build large!"
-        head /proc/cpuinfo
-        head /proc/meminfo
-        lsblk
-        df -h .
----
-apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: pipeline-multiarch
+  name: pipeline-kata-only
 spec:
   params:
   tasks:
@@ -75,7 +18,7 @@ spec:
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
-  name: listener-multiarch
+  name: listener-kata-only
 spec:
   resourcetemplates:
     - apiVersion: tekton.dev/v1
@@ -88,22 +31,22 @@ spec:
         securityContext:
           privileged: true
         pipelineRef:
-            name: pipeline-multiarch
+            name: pipeline-kata-only
 ---
 apiVersion: tekton.dev/v1
 kind: TriggerBinding
 metadata:
-  name: listener-multiarch
+  name: listener-kata-only
 spec:
   params:
 ---
 apiVersion: tekton.dev/v1
 kind: EventListener
 metadata:
-  name: listener-multiarch
+  name: listener-kata-only
 spec:
   triggers:
     - binding:
-        name: listener-multiarch
+        name: listener-kata-only
       template:
-        name: listener-multiarch
+        name: listener-kata-only
