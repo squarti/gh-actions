@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: pipeline-one-arch
+spec:
+  params:
+  tasks:
+    - name: build-x86-large
+      taskRef:
+        name: build-x86-large
+---
+apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: listener-one-arch
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1
+      kind: PipelineRun
+      metadata:
+        name: run
+      spec:
+        securityContext:
+          privileged: true
+        pipelineRef:
+            name: pipeline-one-arch
+---
+apiVersion: tekton.dev/v1
+kind: TriggerBinding
+metadata:
+  name: listener-one-arch
+spec:
+  params:
+---
+apiVersion: tekton.dev/v1
+kind: EventListener
+metadata:
+  name: listener-one-arch
+spec:
+  triggers:
+    - binding:
+        name: listener-one-arch
+      template:
+        name: listener-one-arch
