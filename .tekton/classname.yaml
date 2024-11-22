@@ -1,0 +1,65 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-classname
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build classname!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: pipeline-classname
+spec:
+  params:
+  tasks:
+    - name: build-classname
+      taskRef:
+        name: build-classname
+---
+apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: listener-classname
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1
+      kind: PipelineRun
+      metadata:
+        name: run
+      spec:
+        securityContext:
+          privileged: true
+        pipelineRef:
+            name: pipeline-classname
+        taskRunSpecs:
+        - pipelineTaskName: build-classname
+          taskPodTemplate:
+             runtimeClassName: kata-remote-x86-large
+---
+apiVersion: tekton.dev/v1
+kind: TriggerBinding
+metadata:
+  name: listener-classname
+spec:
+  params:
+---
+apiVersion: tekton.dev/v1
+kind: EventListener
+metadata:
+  name: listener-classname
+spec:
+  triggers:
+    - binding:
+        name: listener-classname
+      template:
+        name: listener-classname
