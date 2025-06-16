@@ -73,6 +73,7 @@ spec:
         head /proc/meminfo
         lsblk
         df -h .
+        sleep 600
 ---
 apiVersion: tekton.dev/v1
 kind: Task
