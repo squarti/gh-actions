@@ -5,9 +5,9 @@ metadata:
 spec:
   params:
   tasks:
-    - name: build-x86-large
+    - name: build-ppc64le-small
       taskRef:
-        name: build-x86-large
+        name: build-ppc64le-small
 ---
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
