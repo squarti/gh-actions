@@ -209,6 +209,25 @@ spec:
         df -h .
 ---
 apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-ppc64le-small
+  labels:
+    runtimeClassName: ppc64le-small
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      script: |
+        #!/bin/bash
+        echo "Build ppc64le-small!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: pipeline-multiarch
@@ -248,6 +267,9 @@ spec:
     - name: build-s390x-xxlarge
       taskRef:
         name: build-s390x-xxlarge
+    - name: build-ppc64le-small
+      taskRef:
+        name: build-ppc64le-small
 ---
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
