@@ -8,7 +8,7 @@ spec:
   params:
   steps:
     - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      image: icr.io/continuous-delivery/base-images/base:latest
       script: |
         #!/bin/bash
         echo "Build small!"
@@ -27,7 +27,7 @@ spec:
   params:
   steps:
     - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      image: icr.io/continuous-delivery/base-images/base:latest
       script: |
         #!/bin/bash
         echo "Build medium!"
@@ -65,7 +65,7 @@ spec:
   params:
   steps:
     - name: build
-      image: docker.cd-caa-c875ab6ccb1204e43cf53a8a7c8281f3-0000.us-south.containers.appdomain.cloud/base:v1.19.0
+      image: icr.io/continuous-delivery/base-images/base:latest
       script: |
         #!/bin/bash
         echo "Build x86-large!"
@@ -85,7 +85,7 @@ spec:
   params:
   steps:
     - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      image: icr.io/continuous-delivery/base-images/base:latest
       script: |
         #!/bin/bash
         echo "Build x86-xlarge!"
@@ -104,7 +104,7 @@ spec:
   params:
   steps:
     - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      image: icr.io/continuous-delivery/base-images/base:latest
       script: |
         #!/bin/bash
         echo "Build x86-xxlarge!"
@@ -123,7 +123,7 @@ spec:
   params:
   steps:
     - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      image: icr.io/continuous-delivery/base-images/base:latest
       script: |
         #!/bin/bash
         echo "Build s390x-small!"
@@ -142,7 +142,7 @@ spec:
   params:
   steps:
     - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      image: icr.io/continuous-delivery/base-images/base:latest
       script: |
         #!/bin/bash
         echo "Build s390x-medium!"
@@ -161,7 +161,7 @@ spec:
   params:
   steps:
     - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      image: icr.io/continuous-delivery/base-images/base:latest
       script: |
         #!/bin/bash
         echo "Build s390x-large!"
@@ -180,7 +180,7 @@ spec:
   params:
   steps:
     - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      image: icr.io/continuous-delivery/base-images/base:latest
       script: |
         #!/bin/bash
         echo "Build s390x-xlarge!"
@@ -199,7 +199,7 @@ spec:
   params:
   steps:
     - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      image: icr.io/continuous-delivery/base-images/base:latest
       script: |
         #!/bin/bash
         echo "Build s390x-xxlarge!"
@@ -218,7 +218,7 @@ spec:
   params:
   steps:
     - name: build
-      image: icr.io/continuous-delivery/base-images/base:v1.6.0
+      image: icr.io/continuous-delivery/base-images/base:latest
       script: |
         #!/bin/bash
         echo "Build ppc64le-small!"
