@@ -251,7 +251,7 @@ spec:
         name: build-x86-xlarge
     - name: build-x86-xxlarge
       taskRef:
-    #     name: build-x86-xxlarge
+        name: build-x86-xxlarge
     # - name: build-s390x-small
     #   taskRef:
     #     name: build-s390x-small
