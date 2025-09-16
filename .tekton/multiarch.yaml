@@ -246,12 +246,12 @@ spec:
     - name: build-x86-large
       taskRef:
         name: build-x86-large
-    - name: build-x86-xlarge
-      taskRef:
-        name: build-x86-xlarge
-    - name: build-x86-xxlarge
-      taskRef:
-        name: build-x86-xxlarge
+    # - name: build-x86-xlarge
+    #   taskRef:
+    #     name: build-x86-xlarge
+    # - name: build-x86-xxlarge
+    #   taskRef:
+    #     name: build-x86-xxlarge
     # - name: build-s390x-small
     #   taskRef:
     #     name: build-s390x-small
@@ -267,9 +267,9 @@ spec:
     # - name: build-s390x-xxlarge
     #   taskRef:
     #     name: build-s390x-xxlarge
-    # - name: build-ppc64le-small
-    #   taskRef:
-    #     name: build-ppc64le-small
+    - name: build-ppc64le-small
+      taskRef:
+        name: build-ppc64le-small
 ---
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
