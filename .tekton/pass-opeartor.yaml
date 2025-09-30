@@ -1,0 +1,138 @@
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: pass-opeartor-pr-listener
+spec:
+  serviceAccountName: tekton-robot
+  triggers:
+    - name: pass-opeartor-pr-trigger
+      bindings:
+        - ref: pass-operator-pipeline-binding
+      template:
+        ref: pass-opeartor-pr-trigger-template
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pass-operator-pr
+spec:
+  description: Updates the image tags used in the pass-operator repo.
+  params:
+    - name: new_img_tags
+  workspaces:
+    - name: shared-data
+  tasks:
+    - name: update-digests-and-create-pr-task
+      taskRef:
+        name: update-digests-and-create-pr-task
+      params:
+        - name: new_img_tags
+          value: $(params.new_img_tags)
+      workspaces:
+        - name: source
+          workspace: shared-data
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: pass-operator-pipeline-binding
+spec:
+  params:
+    - name: new_img_tags
+      value: $(params.new_img_tags)
+    - name: DOCKER_CREDS
+      value: $(body.DOCKER_CREDS)
+    - name: GITHUB_USER
+      value: $(body.GITHUB_USER)
+    - name: GITHUB_PAT
+      value: $(body.GITHUB_PAT)
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: pass-opeartor-pr-trigger-template
+spec:
+  params:
+    - name: new_img_tags
+    - name: DOCKER_CREDS
+    - name: GITHUB_USER
+    - name: GITHUB_PAT
+  resourcetemplates:
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: docker-creds
+      type: kubernetes.io/dockerconfigjson
+      data:
+        .dockerconfigjson: $(params.DOCKER_CREDS)
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: git-credentials
+        annotations:
+          tekton.dev/git-0: 'https://github.ibm.com'
+      type: kubernetes.io/basic-auth
+      stringData:
+        username: $(params.GITHUB_USER)
+        password: $(params.GITHUB_PAT)
+    - apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: svc-acc
+      secrets:
+        - name: git-credentials
+        - name: docker-creds
+      imagePullSecrets:
+        - name: docker-creds
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: pass-operator-pr-pipelinerun-
+      spec:
+        serviceAccountName: svc-acc
+        pipelineRef:
+          name: pass-operator-pr
+        podTemplate:
+          securityContext:
+            fsGroup: 65532
+          runtimeClassName: medium
+        workspaces:
+          - name: shared-data
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+        params:
+          - name: new_img_tags
+            value: $(params.new_img_tags)
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: update-digests-and-create-pr-task
+spec:
+  description: Updates digests and creates a PR
+  workspaces:
+    - name: source
+  params:
+    - name: new_img_tags
+      type: string
+      description: Server URL on which Jenkins is running
+  steps:
+    - name: update-digests-and-create-pr
+      image: >-
+        docker-na.artifactory.swg-devops.com/taas-docker-public/jonk/agent-jnlp:latest
+      workingDir: $(workspaces.source.path)
+      env:
+        - name: BUILD_NUMBER
+          valueFrom: null
+          fieldRef:
+            fieldPath: 'metadata.annotations[''devops.cloud.ibm.com/build-number'']'
+      script: >
+        #!/usr/bin/env sh
+
+        cat digestsAws.yaml
