@@ -116,8 +116,8 @@ spec:
       description: Server URL on which Jenkins is running
   steps:
     - name: update-digests-and-create-pr
-      image: >-
-        docker-na.artifactory.swg-devops.com/taas-docker-public/jonk/agent-jnlp:latest
+      #image: docker-na.artifactory.swg-devops.com/taas-docker-public/jonk/agent-jnlp:latest
+      image: icr.io/continuous-delivery/base-images/base:latest
       workingDir: $(workspaces.source.path)
       env:
         - name: BUILD_NUMBER
