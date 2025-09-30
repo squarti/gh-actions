@@ -4,7 +4,6 @@ kind: EventListener
 metadata:
   name: pass-opeartor-pr-listener
 spec:
-  serviceAccountName: tekton-robot
   triggers:
     - name: pass-opeartor-pr-trigger
       bindings:
