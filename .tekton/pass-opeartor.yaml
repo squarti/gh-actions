@@ -27,7 +27,7 @@ spec:
         name: update-digests-and-create-pr-task
       params:
         - name: new_img_tags
-          value: $(params.new_img_tags)
+          value: ""
       workspaces:
         - name: source
           workspace: shared-data
@@ -39,13 +39,13 @@ metadata:
 spec:
   params:
     - name: new_img_tags
-      value: $(params.new_img_tags)
+      value: ""
     - name: DOCKER_CREDS
-      value: $(body.DOCKER_CREDS)
+      value: ""
     - name: GITHUB_USER
-      value: $(body.GITHUB_USER)
+      value: ""
     - name: GITHUB_PAT
-      value: $(body.GITHUB_PAT)
+      value: ""
 ---
 apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerTemplate
@@ -73,8 +73,8 @@ spec:
           tekton.dev/git-0: 'https://github.ibm.com'
       type: kubernetes.io/basic-auth
       stringData:
-        username: $(params.GITHUB_USER)
-        password: $(params.GITHUB_PAT)
+        username: ""
+        password: ""
     - apiVersion: v1
       kind: ServiceAccount
       metadata:
@@ -107,7 +107,7 @@ spec:
                     storage: 1Gi
         params:
           - name: new_img_tags
-            value: $(params.new_img_tags)
+            value: ""
 ---
 apiVersion: tekton.dev/v1beta1
 kind: Task
@@ -133,5 +133,3 @@ spec:
             fieldPath: 'metadata.annotations[''devops.cloud.ibm.com/build-number'']'
       script: >
         #!/usr/bin/env sh
-
-        cat digestsAws.yaml
