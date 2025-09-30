@@ -126,3 +126,5 @@ spec:
             fieldPath: 'metadata.annotations[''devops.cloud.ibm.com/build-number'']'
       script: >
         #!/usr/bin/env sh
+
+        git clone https://github.com/confidential-containers/cloud-api-adaptor.git
