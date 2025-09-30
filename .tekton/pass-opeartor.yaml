@@ -86,8 +86,8 @@ spec:
         pipelineRef:
           name: pass-operator-pr
         podTemplate:
-          securityContext:
-            fsGroup: 65532
+          #securityContext:
+          #  fsGroup: 65532
           runtimeClassName: medium
         workspaces:
           - name: shared-data
