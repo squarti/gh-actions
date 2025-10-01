@@ -88,7 +88,7 @@ spec:
         podTemplate:
           securityContext:
             fsGroup: 65532
-          runtimeClassName: medium
+          #runtimeClassName: medium
         workspaces:
           - name: shared-data
             volumeClaimTemplate:
