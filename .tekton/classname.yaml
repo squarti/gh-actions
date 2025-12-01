@@ -12,6 +12,7 @@ spec:
         echo "Build classname!"
         head /proc/cpuinfo
         head /proc/meminfo
+        echo "hi"
         lsblk
         df -h .
 ---
