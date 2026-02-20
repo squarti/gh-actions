@@ -1,3 +1,3 @@
-# gh-actions SSQ4
+# gh-actions SSQ
 
 test
