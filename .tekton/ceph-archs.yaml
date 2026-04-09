@@ -7,7 +7,7 @@ spec:
   tasks:
     - name: build-x86-ceph-128x512
       taskRef:
-        name: bbuild-x86-ceph-128x512
+        name: build-x86-ceph-128x512
     - name: build-s390x-ceph-16x128
       taskRef:
         name: build-s390x-ceph-16x128
