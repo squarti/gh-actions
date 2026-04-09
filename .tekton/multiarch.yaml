@@ -228,6 +228,63 @@ spec:
         df -h .
 ---
 apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-x86-ceph-128x512
+  labels:
+    runtimeClassName: x86-ceph-128x512
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:latest
+      script: |
+        #!/bin/bash
+        echo "Build x86-ceph-128x512!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-s390x-ceph-16x128
+  labels:
+    runtimeClassName: s390x-ceph-16x128
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:latest
+      script: |
+        #!/bin/bash
+        echo "Build s390x-ceph-16x128!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: build-ppc64le-ceph-40x256
+  labels:
+    runtimeClassName: ppc64le-ceph-40x256
+spec:
+  params:
+  steps:
+    - name: build
+      image: icr.io/continuous-delivery/base-images/base:latest
+      script: |
+        #!/bin/bash
+        echo "Build ppc64le-ceph-40x256!"
+        head /proc/cpuinfo
+        head /proc/meminfo
+        lsblk
+        df -h .
+---
+apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
   name: pipeline-multiarch
