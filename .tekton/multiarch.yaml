@@ -232,7 +232,7 @@ kind: Task
 metadata:
   name: build-x86-ceph-128x512
   labels:
-    runtimeClassName: x86-ceph-128x512
+    runtimeClassName: ceph-x86-128x512
 spec:
   params:
   steps:
@@ -251,7 +251,7 @@ kind: Task
 metadata:
   name: build-s390x-ceph-16x128
   labels:
-    runtimeClassName: s390x-ceph-16x128
+    runtimeClassName: ceph-s390x-16x128
 spec:
   params:
   steps:
@@ -270,7 +270,7 @@ kind: Task
 metadata:
   name: build-ppc64le-ceph-40x256
   labels:
-    runtimeClassName: ppc64le-ceph-40x256
+    runtimeClassName: ceph-ppc64le-40x256
 spec:
   params:
   steps:
