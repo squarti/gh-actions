@@ -1,0 +1,60 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: pipeline-ceph-archs
+spec:
+  params:
+  tasks:
+    - name: build-x86-ceph-128x512
+      taskRef:
+        name: bbuild-x86-ceph-128x512
+    - name: build-s390x-ceph-16x128
+      taskRef:
+        name: build-s390x-ceph-16x128
+    - name: build-ppc64le-ceph-40x256
+      taskRef:
+        name: build-ppc64le-ceph-40x256
+---
+apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: listener-ceph-archs
+spec:
+  resourcetemplates:
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: private-registry-secret
+      type: kubernetes.io/dockerconfigjson
+      data:
+        .dockerconfigjson: $(params.dockerconfigjson)
+    - apiVersion: tekton.dev/v1
+      kind: PipelineRun
+      metadata:
+        name: run
+      spec:
+        podTemplate:
+          imagePullSecrets:
+          - name: private-registry-secret
+        securityContext:
+          privileged: true
+        pipelineRef:
+            name: pipeline-ceph-archs
+---
+apiVersion: tekton.dev/v1
+kind: TriggerBinding
+metadata:
+  name: listener-ceph-archs
+spec:
+  params:
+---
+apiVersion: tekton.dev/v1
+kind: EventListener
+metadata:
+  name: listener-ceph-archs
+spec:
+  triggers:
+    - binding:
+        name: listener-ceph-archs
+      template:
+        name: listener-ceph-archs
