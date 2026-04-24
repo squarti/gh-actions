@@ -45,9 +45,9 @@ spec:
         #podTemplate:
         #    runtimeClassName: x86-large
         ######
-       taskRunSpecs:
-       - pipelineTaskName: build-classname
-         taskPodTemplate:
+        taskRunSpecs:
+        - pipelineTaskName: build-classname
+          taskPodTemplate:
             runtimeClassName: x86-large
 ---
 apiVersion: tekton.dev/v1
