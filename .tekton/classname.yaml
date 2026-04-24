@@ -2,6 +2,10 @@ apiVersion: tekton.dev/v1
 kind: Task
 metadata:
   name: build-classname-base
+  #### works
+  labels:
+    runtimeClassName: x86-large
+  ####
 spec:
   params:
   steps:
@@ -48,10 +52,10 @@ spec:
         ######
 
         ###### works
-        taskRunSpecs:
-        - pipelineTaskName: build-classname
-          taskPodTemplate:
-            runtimeClassName: kata-remote-x86-large #bad name
+        #taskRunSpecs:
+        #- pipelineTaskName: build-classname
+        #  taskPodTemplate:
+        #    runtimeClassName: kata-remote-x86-large #bad name
         #####
 ---
 apiVersion: tekton.dev/v1
