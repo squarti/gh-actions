@@ -41,12 +41,14 @@ spec:
           privileged: true
         pipelineRef:
             name: pipeline-classname
-        podTemplate:
+        ###### works
+        #podTemplate:
+        #    runtimeClassName: x86-large
+        ######
+       taskRunSpecs:
+       - pipelineTaskName: build-classname
+         taskPodTemplate:
             runtimeClassName: x86-large
-#        taskRunSpecs:
-#        - pipelineTaskName: build-classname
-#          taskPodTemplate:
-#             runtimeClassName: x86-large
 ---
 apiVersion: tekton.dev/v1
 kind: TriggerBinding
