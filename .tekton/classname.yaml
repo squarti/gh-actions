@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1
 kind: Task
 metadata:
-  name: build-classname
+  name: build-classname-base
 spec:
   params:
   steps:
@@ -24,7 +24,7 @@ spec:
   tasks:
     - name: build-classname
       taskRef:
-        name: build-classname
+        name: build-classname-base
 ---
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
