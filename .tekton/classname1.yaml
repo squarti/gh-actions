@@ -1,10 +1,7 @@
 apiVersion: tekton.dev/v1
 kind: Task
 metadata:
-  name: build-classname-base
-  #### works
-  labels:
-    runtimeClassName: x86-large
+  name: build-classname1-base
 spec:
   params:
   steps:
@@ -12,7 +9,7 @@ spec:
       image: icr.io/continuous-delivery/base-images/base:v1.6.0
       script: |
         #!/bin/bash
-        echo "Build classname!"
+        echo "Build classname1!"
         head /proc/cpuinfo
         head /proc/meminfo
         lsblk
@@ -21,18 +18,20 @@ spec:
 apiVersion: tekton.dev/v1
 kind: Pipeline
 metadata:
-  name: pipeline-classname
+  name: pipeline-classname1
 spec:
   params:
   tasks:
-    - name: build-classname
+    - name: build-classname1
       taskRef:
-        name: build-classname-base
+        name: build-classname1-base
+      podTemplate:
+        runtimeClassName: x86-large
 ---
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
-  name: listener-classname
+  name: listener-classname1
 spec:
   resourcetemplates:
     - apiVersion: tekton.dev/v1
@@ -43,22 +42,22 @@ spec:
         securityContext:
           privileged: true
         pipelineRef:
-            name: pipeline-classname
+            name: pipeline-classname1
 ---
 apiVersion: tekton.dev/v1
 kind: TriggerBinding
 metadata:
-  name: listener-classname
+  name: listener-classname1
 spec:
   params:
 ---
 apiVersion: tekton.dev/v1
 kind: EventListener
 metadata:
-  name: listener-classname
+  name: listener-classname1
 spec:
   triggers:
     - binding:
-        name: listener-classname
+        name: listener-classname1
       template:
-        name: listener-classname
+        name: listener-classname1
