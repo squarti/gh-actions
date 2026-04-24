@@ -3,8 +3,8 @@ kind: Task
 metadata:
   name: build-classname-base
   #### works
-  labels:
-    runtimeClassName: x86-large
+  #labels:
+  #  runtimeClassName: x86-large
   ####
 spec:
   params:
@@ -29,6 +29,8 @@ spec:
     - name: build-classname
       taskRef:
         name: build-classname-base
+      podTemplate:
+        runtimeClassName: x86-large
 ---
 apiVersion: tekton.dev/v1beta1
 kind: TriggerTemplate
@@ -51,7 +53,7 @@ spec:
         #    runtimeClassName: x86-large
         ######
 
-        ###### works
+        ###### works with bad name
         #taskRunSpecs:
         #- pipelineTaskName: build-classname
         #  taskPodTemplate:
