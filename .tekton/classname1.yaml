@@ -25,6 +25,7 @@ spec:
     - name: build-classname1
       taskRef:
         name: build-classname1-base
+      #### does not work in 0.22.9 agent
       podTemplate:
         runtimeClassName: x86-large
 ---
