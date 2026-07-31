@@ -311,9 +311,9 @@ spec:
     # - name: build-s390x-small
     #   taskRef:
     #     name: build-s390x-small
-    # - name: build-s390x-medium
-    #   taskRef:
-    #     name: build-s390x-medium
+    - name: build-s390x-medium
+      taskRef:
+        name: build-s390x-medium
     # - name: build-s390x-large
     #   taskRef:
     #     name: build-s390x-large
