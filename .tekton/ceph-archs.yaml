@@ -21,21 +21,11 @@ metadata:
   name: listener-ceph-archs
 spec:
   resourcetemplates:
-    - apiVersion: v1
-      kind: Secret
-      metadata:
-        name: private-registry-secret
-      type: kubernetes.io/dockerconfigjson
-      data:
-        .dockerconfigjson: $(params.dockerconfigjson)
     - apiVersion: tekton.dev/v1
       kind: PipelineRun
       metadata:
         name: run
       spec:
-        podTemplate:
-          imagePullSecrets:
-          - name: private-registry-secret
         securityContext:
           privileged: true
         pipelineRef:
