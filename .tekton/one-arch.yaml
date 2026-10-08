@@ -15,13 +15,6 @@ metadata:
   name: listener-one-arch
 spec:
   resourcetemplates:
-    - apiVersion: v1
-      kind: Secret
-      metadata:
-        name: private-registry-secret
-      type: kubernetes.io/dockerconfigjson
-      data:
-        .dockerconfigjson: $(params.dockerconfigjson)
     - apiVersion: tekton.dev/v1
       kind: PipelineRun
       metadata:
