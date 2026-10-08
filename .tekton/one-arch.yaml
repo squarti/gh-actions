@@ -20,9 +20,6 @@ spec:
       metadata:
         name: run
       spec:
-        podTemplate:
-          imagePullSecrets:
-          - name: private-registry-secret
         securityContext:
           privileged: true
         pipelineRef:
